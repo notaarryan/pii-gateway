@@ -1,9 +1,6 @@
 package com.aryan.piigateway.detection;
 
-import java.util.Comparator;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public final class PiiMatches {
@@ -15,5 +12,9 @@ public final class PiiMatches {
 
     public static Map<PiiType, List<PiiMatch>> groupByType(List<PiiMatch> matches) {
         return matches.stream().collect(Collectors.groupingBy(PiiMatch::type, () -> new EnumMap<>(PiiType.class), Collectors.toList()));
+    }
+
+    public static Optional<PiiMatch> firstOfType(List<PiiMatch> matches, PiiType type) {
+        return matches.stream().filter(m -> m.type() == type).min(Comparator.comparingInt(PiiMatch::start));
     }
 }
