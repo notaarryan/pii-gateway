@@ -1,5 +1,6 @@
 package com.aryan.piigateway.detection;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -85,5 +86,33 @@ public class PiiMatchesTest {
         List<PiiMatch> matches = List.of();
         Optional<PiiMatch> result = PiiMatches.firstOfType(matches, PiiType.EMAIL);
         assertEquals(Optional.empty(), result);
+    }
+
+    @Test
+    @DisplayName("sortedByStart rejects a null list")
+    void sortedByStart_rejectsNullList() {
+        var ex = assertThrows(NullPointerException.class, () -> PiiMatches.sortedByStart(null));
+        assertTrue(ex.getMessage().contains("matches cannot be null"));
+    }
+
+    @Test
+    @DisplayName("groupByType rejects a null list")
+    void groupByType_rejectsNullList() {
+        var ex = assertThrows(NullPointerException.class, () -> PiiMatches.groupByType(null));
+        assertTrue(ex.getMessage().contains("matches cannot be null"));
+    }
+
+    @Test
+    @DisplayName("firstOfType rejects a null list")
+    void firstOfType_rejectsNullList() {
+        var ex = assertThrows(NullPointerException.class, () -> PiiMatches.firstOfType(null, PiiType.EMAIL));
+        assertTrue(ex.getMessage().contains("matches cannot be null"));
+    }
+
+    @Test
+    @DisplayName("firstOfType rejects a null type")
+    void firstOfType_rejectsNullType() {
+        var ex = assertThrows(NullPointerException.class, () -> PiiMatches.firstOfType(List.of(), null));
+        assertTrue(ex.getMessage().contains("type cannot be null"));
     }
 }
