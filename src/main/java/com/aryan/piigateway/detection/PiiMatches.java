@@ -7,14 +7,18 @@ public final class PiiMatches {
     private PiiMatches() {}
 
     public static List<PiiMatch> sortedByStart(List<PiiMatch> matches) {
+        Objects.requireNonNull(matches, "matches cannot be null");
         return matches.stream().sorted(Comparator.comparingInt(PiiMatch::start)).toList();
     }
 
     public static Map<PiiType, List<PiiMatch>> groupByType(List<PiiMatch> matches) {
+        Objects.requireNonNull(matches, "matches cannot be null");
         return matches.stream().collect(Collectors.groupingBy(PiiMatch::type, () -> new EnumMap<>(PiiType.class), Collectors.toList()));
     }
 
     public static Optional<PiiMatch> firstOfType(List<PiiMatch> matches, PiiType type) {
+        Objects.requireNonNull(matches, "matches cannot be null");
+        Objects.requireNonNull(type, "type cannot be null");
         return matches.stream().filter(m -> m.type() == type).min(Comparator.comparingInt(PiiMatch::start));
     }
 }
